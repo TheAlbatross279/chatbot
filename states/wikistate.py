@@ -16,28 +16,31 @@ class WikiState(State):
    @staticmethod
    def recognize(cmd):
       #split
-      input_text = word_tokenize(cmd) 
-      birthday_keywords = ['born', 'birthdate', 'birthday', 'birth']
+      #input_text = word_tokenize(cmd) 
+      #birthday_keywords = ['born', 'birthdate', 'birthday', 'birth']
       isBirthday = False
-      for word in input_text:
-         if word in birthday_keywords:
-            birthday_lookup(postag(input_text));
-            isBirthday = True
-            break
+      #for word in input_text:
+      #   if word in birthday_keywords:
+      #      birthday_lookup(postag(input_text));
+      #      isBirthday = True
+      #      break
 
+      name = None
       if not isBirthday:
-         tagged_words = pos_tag(input_text)
+         #tagged_words = pos_tag(input_text)
          grammar = "NP: {((?:(?:<DT>)?(?:<NN[P]?[S]?>)+)(?:(?:<DT>|<IN>)*(?:<NN[P]?[S]?>)+)*)}"
          cp = RegexpParser(grammar)
-         result = cp.parse(tagged_words)
+         result = cp.parse(cmd)
 
          for e in result:
             if isinstance(e, Tree):
                if e.node == 'NP':
                   name = [w[0] for w in e]
+     
+      if name == None:
+         return (0, {})
       
-      print name
-      return (1, {'name': name})
+      return (0.9, {'name': name})
 
    @staticmethod
    def respond(context):

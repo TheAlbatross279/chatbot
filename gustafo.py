@@ -40,6 +40,8 @@ from nltk.chat import eliza,zen
 # import state files
 from state import StateCollection
 from states.wikistate import WikiState
+from states.outreach import OutreachState
+from states.inquiry import InquiryState
 
 # this is a standin function for all responses that can easily be changed from here
 responseFun = eliza.eliza_chatbot.respond
@@ -50,7 +52,7 @@ class TestBot(SingleServerIRCBot):
         SingleServerIRCBot.__init__(self, [(server, port)], nickname, nickname)
         self.channel = channel
 
-        self.states = StateCollection([WikiState])
+        self.states = StateCollection([WikiState, OutreachState, InquiryState])
 
     def on_nicknameinuse(self, c, e):
         c.nick(c.get_nickname() + "_")
@@ -98,7 +100,7 @@ class TestBot(SingleServerIRCBot):
 #none of the commands match, pass the text to the response function defined above
 #but first sleep a little
             time.sleep(3)
-            c.privmsg(self.channel,nick + ": " + self.states.query(cmd))
+            c.privmsg(self.channel,nick + ": " + self.states.query(nick, cmd))
 
 def main():
     import sys
