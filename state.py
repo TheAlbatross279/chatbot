@@ -6,10 +6,10 @@ def stateTest((msg, state)):
 class State:
    @staticmethod
    def recognize(msg):
-      return 0
+      return (0, {})
 
    @staticmethod
-   def respond(msg):
+   def respond(context):
       return None
 
 class StateCollection:
@@ -20,6 +20,6 @@ class StateCollection:
    def query(self, msg):
       confidence = self.p.map(stateTest, [(msg, state) for state in self.states])
 
-      result = reduce(lambda x, y: x if x[0] > y[0] else y, confidence)
+      ((_, context), state) = reduce(lambda x, y: x if x[0][0] > y[0][0] else y, confidence)
 
-      return result[1].respond(msg)
+      return state.respond(context)
