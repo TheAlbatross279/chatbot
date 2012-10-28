@@ -32,6 +32,8 @@ The known commands are:
 from ircbot import SingleServerIRCBot
 from irclib import nm_to_n, nm_to_h, irc_lower, ip_numstr_to_quad, ip_quad_to_numstr
 import time #mainly for the sleep() function
+from wikipedia import wikipedia
+from parser import parser
 
 # import NLTK objects
 import nltk
@@ -88,11 +90,16 @@ class TestBot(SingleServerIRCBot):
                 voiced = chobj.voiced()
                 voiced.sort()
                 c.notice(nick, "Voiced: " + ", ".join(voiced))
+        elif cmd == "wiki":
+            wiki = wikipedia("")
+            info_text = wiki.get_text()
+            c.privmsg(self.channel, nick + ": "  + info_text)
         else:
 #none of the commands match, pass the text to the response function defined above
 #but first sleep a little
             time.sleep(3)
-            c.privmsg(self.channel,nick + ": " + responseFun(cmd))
+            #c.privmsg(self.channel,nick + ": " + responseFun(cmd))
+            par = parser(cmd)
 
 def main():
     import sys
