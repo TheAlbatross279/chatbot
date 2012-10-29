@@ -42,6 +42,7 @@ from state import StateCollection
 from states.wikistate import WikiState
 from states.outreach import OutreachState
 from states.inquiry import InquiryState
+from states.secondaryoutreach import SecondaryOutreach
 
 # this is a standin function for all responses that can easily be changed from here
 responseFun = eliza.eliza_chatbot.respond
@@ -52,7 +53,7 @@ class TestBot(SingleServerIRCBot):
         SingleServerIRCBot.__init__(self, [(server, port)], nickname, nickname)
         self.channel = channel
 
-        self.states = StateCollection([WikiState, OutreachState, InquiryState])
+        self.states = StateCollection([WikiState, OutreachState, InquiryState, SecondaryOutreach])
 
     def on_nicknameinuse(self, c, e):
         c.nick(c.get_nickname() + "_")
