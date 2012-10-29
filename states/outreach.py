@@ -13,4 +13,4 @@ class OutreachState(State):
 
    @staticmethod
    def respond(context):
-      return "Hello, " + context['_nick']
+      return "Hello, " + context['_nick'] + "."
