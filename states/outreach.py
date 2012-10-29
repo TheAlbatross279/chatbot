@@ -1,4 +1,5 @@
 from state import State
+from inquiry import InquiryState
 
 class OutreachState(State):
    @staticmethod
@@ -14,3 +15,7 @@ class OutreachState(State):
    @staticmethod
    def respond(context):
       return "Hello, " + context['_nick']
+
+   @staticmethod
+   def nextStates():
+      return tuple([InquiryState])
