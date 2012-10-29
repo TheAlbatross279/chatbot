@@ -1,6 +1,6 @@
 from state import State, StateCollection
-from parser import WikiState
+from states.wikistate import WikiState
 
 bot = StateCollection([WikiState])
 
-print bot.query("Tell me about John Adams")
+print bot.query("Chris", "Tell me about John Adams")

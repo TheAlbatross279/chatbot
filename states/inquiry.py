@@ -8,7 +8,7 @@ class InquiryState(State):
 
       tot_being, tot_activ = 0.0, 0.0
    
-      for (w, pos) in msg:
+      for (w, tag) in msg:
          if w in well_being:
             tot_being += 1
          if w in activity:
