@@ -16,7 +16,7 @@ class State:
 class StateCollection:
    def __init__(self, states, workers=cpu_count()):
       self.states = states
-      self.p = Pool(processes=1)
+      self.p = Pool(processes=workers)
 
    def query(self, nick, msg):
       msg = pos_tag(word_tokenize(msg))
