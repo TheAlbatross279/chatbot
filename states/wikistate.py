@@ -116,7 +116,6 @@ class WikiState(State):
          return final_string
       else: #is birthday
          dob = re.findall(r'<span class="bday">([\d-]+)</span>', input_text)
-
          os.system("rm wiki.tmp") 
          if len(dob) < 1:
             return "I'm not sure when " + " ".join(context['name']) + " was born..."
