@@ -13,6 +13,8 @@ from nltk.tree import Tree
 from state import State
 from HTMLParser import HTMLParser
 from datetime import datetime
+import urllib
+import string
 
 class WikiState(State):
 
@@ -34,7 +36,7 @@ class WikiState(State):
    def parser_results(candidates):
       name = None
       #tagged_words = pos_tag(input_text)
-      grammar = "NP: {((?:(?:<NN[P]?[S]?>)+)(?:(?:<DT>|<IN>)*(?:<NN[P]?[S]?>)+)*)}"
+      grammar = "NP: {((?:(?:<DT>)?(?:<NN[P]?[S]?>|<CD>|<JJ>)+)(?:(?:<DT>|<IN>)*(?:<NN[P]?[S]?>|<CD>|<CC>|<POS>|<JJ>)+)*)}"
       cp = RegexpParser(grammar)
       result = cp.parse(candidates)
 
@@ -42,6 +44,8 @@ class WikiState(State):
       for e in result:
          if isinstance(e, Tree):
             if e.node == 'NP':
+               if e[0][1] == "DT" and e[0][0][0] not in string.uppercase:
+                  e = e[1:]
                name = [w[0] for w in e]
                foundNP = True
      
@@ -67,7 +71,7 @@ class WikiState(State):
       #prefix = "\"http://en.wikipedia.org/w/api.php?format=dump&action=query&prop=revisions&rvprop=content&titles="
       prefix = "\"http://en.wikipedia.org/wiki/"
 
-      page = '_'.join(context["name"])
+      page = urllib.quote('_'.join(context["name"]))
 
       print page
 #      page = re.sub("[ ]", "_", page)
@@ -99,17 +103,17 @@ class WikiState(State):
          input_text = re.sub(r' +', " ", input_text)
          input_text = re.sub(r' (-|,|\.|\))', r"\g<1>", input_text)
          input_text = re.sub(r'(-|\() ', r"\g<1>", input_text)
+         input_text = re.sub(r'&nbsp;', " ", input_text)
          input_text = re.sub(r'&\S+;', "", input_text)
 
          pst = nltk.tokenize.punkt.PunktSentenceTokenizer().tokenize(input_text)
          
-         length = 0
+         length = len(context['_nick']) 
          final_string = ""
          for sent in pst:
-            print sent
-            length += len(sent)
-            if length < 512:
-               final_string += " " + sent
+            length += len(sent) + 1
+            if length < 425:
+               final_string += sent + " "
 
          os.system("rm wiki.tmp") 
 
