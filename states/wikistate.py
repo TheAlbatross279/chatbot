@@ -21,7 +21,7 @@ class WikiState(State):
    #finds birthday keywords and removes them, setting isbirthday to true
    @staticmethod
    def clear_birthday_words(input_text):
-      birthday_keywords = ['born', 'birthdate', 'birthday', 'birth']
+      birthday_keywords = ['born', 'birthdate', 'birthday', 'birth', 'date']
       candidates = []
       isBirthday = False
       for (w, pos) in input_text:
@@ -30,11 +30,18 @@ class WikiState(State):
          elif not isBirthday:
             isBirthday = True
 
+      if(isBirthday):
+         remove = [('\xe2', 'NNP'), ('\x80', 'NNP'), ('\x99', 'NNP')]
+         for item in remove:
+            if item in candidates:
+               candidates.remove(item)
+
       return (candidates, isBirthday)
    
    @staticmethod
    def parser_results(candidates):
       name = None
+
       #tagged_words = pos_tag(input_text)
       grammar = "NP: {((?:(?:<DT>)?(?:<NN[P]?[S]?>|<CD>|<JJ>)+)(?:(?:<DT>|<IN>)*(?:<NN[P]?[S]?>|<CD>|<CC>|<POS>|<JJ>)+)*)}"
       cp = RegexpParser(grammar)
