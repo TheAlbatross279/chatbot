@@ -29,6 +29,7 @@ The known commands are:
     dcc -- Let the bot invite you to a DCC CHAT connection.
 """
 #import irc bot
+from threading import Timer
 from ircbot import SingleServerIRCBot
 from irclib import nm_to_n, nm_to_h, irc_lower, ip_numstr_to_quad, ip_quad_to_numstr
 import time #mainly for the sleep() function
@@ -40,7 +41,7 @@ from nltk.chat import eliza,zen
 # import state files
 from state import StateCollection
 from states.wikistate import WikiState
-from states.outreach import OutreachState
+from states.outreach import InitialOutreach, OutreachResponse
 from states.inquiry import InquiryState
 from states.secondaryoutreach import SecondaryOutreach
 
@@ -53,13 +54,19 @@ class TestBot(SingleServerIRCBot):
         SingleServerIRCBot.__init__(self, [(server, port)], nickname, nickname)
         self.channel = channel
 
-        self.states = StateCollection([WikiState, OutreachState, InquiryState, SecondaryOutreach])
+        self.states = StateCollection(self.send_message, [InitialOutreach, WikiState, OutreachResponse, InquiryState, SecondaryOutreach])
+
+    def send_message(self, nick, msg):
+        self.connection.privmsg(self.channel,nick + ": " + msg)
 
     def on_nicknameinuse(self, c, e):
         c.nick(c.get_nickname() + "_")
 
     def on_welcome(self, c, e):
         c.join(self.channel)
+        self.wait_timer = Timer(20.0, self.states.forceState, [InitialOutreach, {'_nick': "Gustafatron"}])
+        self.wait_timer.start()
+        print "Timer Started"
 
     def on_privmsg(self, c, e):
         self.do_command(e, e.arguments()[0])
@@ -100,6 +107,7 @@ class TestBot(SingleServerIRCBot):
         else:
 #none of the commands match, pass the text to the response function defined above
 #but first sleep a little
+            self.wait_timer.cancel()
             time.sleep(3)
             c.privmsg(self.channel,nick + ": " + self.states.query(nick, cmd))
 
