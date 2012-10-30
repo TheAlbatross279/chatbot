@@ -21,20 +21,29 @@ class WikiState(State):
    #finds birthday keywords and removes them, setting isbirthday to true
    @staticmethod
    def clear_birthday_words(input_text):
-      birthday_keywords = ['born', 'birthdate', 'birthday', 'birth']
+      birthday_keywords = ['born', 'birthdate', 'birthday', 'birth', 'date']
+      info_keywords = ['information', 'subject']
       candidates = []
       isBirthday = False
       for (w, pos) in input_text:
          if w not in birthday_keywords:
-            candidates.append((w, pos))
+            if w not in info_keywords:
+               candidates.append((w, pos))
          elif not isBirthday:
             isBirthday = True
+
+      if(isBirthday):
+         remove = [('\xe2', 'NNP'), ('\x80', 'NNP'), ('\x99', 'NNP')]
+         for item in remove:
+            if item in candidates:
+               candidates.remove(item)
 
       return (candidates, isBirthday)
    
    @staticmethod
    def parser_results(candidates):
       name = None
+
       #tagged_words = pos_tag(input_text)
       grammar = "NP: {((?:(?:<DT>)?(?:<NN[P]?[S]?>|<CD>|<JJ>)+)(?:(?:<DT>|<IN>)*(?:<NN[P]?[S]?>|<CD>|<CC>|<POS>|<JJ>)+)*)}"
       cp = RegexpParser(grammar)
@@ -116,6 +125,10 @@ class WikiState(State):
                final_string += sent + " "
 
          os.system("rm wiki.tmp") 
+         
+         dis_string = re.split('\W+', final_string)
+         if(dis_string[len(dis_string)-2] == 'to' and dis_string[len(dis_string)-3] == 'refer' and dis_string[len(dis_string)-4] == 'may'):
+            final_string = "Disambiguation page found for " + " ".join(context['name'])
 
          return final_string
       else: #is birthday
