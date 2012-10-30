@@ -22,11 +22,13 @@ class WikiState(State):
    @staticmethod
    def clear_birthday_words(input_text):
       birthday_keywords = ['born', 'birthdate', 'birthday', 'birth', 'date']
+      info_keywords = ['information', 'subject']
       candidates = []
       isBirthday = False
       for (w, pos) in input_text:
          if w not in birthday_keywords:
-            candidates.append((w, pos))
+            if w not in info_keywords:
+               candidates.append((w, pos))
          elif not isBirthday:
             isBirthday = True
 
