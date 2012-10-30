@@ -125,6 +125,10 @@ class WikiState(State):
                final_string += sent + " "
 
          os.system("rm wiki.tmp") 
+         
+         dis_string = re.split('\W+', final_string)
+         if(dis_string[len(dis_string)-2] == 'to' and dis_string[len(dis_string)-3] == 'refer' and dis_string[len(dis_string)-4] == 'may'):
+            final_string = "Disambiguation page found for " + " ".join(context['name'])
 
          return final_string
       else: #is birthday
