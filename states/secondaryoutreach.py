@@ -25,7 +25,7 @@ class SecondaryOutreach(State):
                       "Sup?",
                       "What's crackin?" ]
 
-        rand_ndx = random.randint(0, len(inquiries))
+        rand_ndx = random.randint(0, len(inquiries) - 1)
 
         return inquiries[rand_ndx]
 
