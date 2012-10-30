@@ -18,8 +18,7 @@ class State:
       return tuple([State])
 
 class StateCollection:
-   def __init__(self, sendMessage, states, workers=cpu_count()):
-      self.sendMessage = sendMessage
+   def __init__(self, states, workers=cpu_count()):
       self.states = states
       self.p = Pool(processes=workers)
       self.validStates = {}
@@ -31,10 +30,10 @@ class StateCollection:
 
       return False
 
-   def forceState(self, state, context={}):
+   def forceState(self, state, context={'_nick': ""}):
       self.validStates[context['_nick']] = state.nextStates()
 
-      self.sendMessage(context['_nick'], state.respond(context))
+      #self.sendMessage(context['_nick'], state.respond(context))
 
    def query(self, nick, msg):
       msg = pos_tag(word_tokenize(msg))
