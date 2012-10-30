@@ -107,7 +107,13 @@ class WikiState(State):
          input_text = re.findall(r"<p>(.*?)<\/p>", input_text)
          if len(input_text) == 0:
             return "I don't know anything about " + " ".join(context['name'])
-         input_text = nltk.util.clean_html(input_text[0])
+         count = 0
+
+         while(input_text[count][0] == '<'):
+            count += 1
+
+         input_text = nltk.util.clean_html(input_text[count])
+         
          input_text = re.sub(r'\[(?:\s*\d+\s*|\s*[cC]itation [nN]eeded\s*)\]', "", input_text)
          input_text = re.sub(r' +', " ", input_text)
          input_text = re.sub(r' (-|,|\.|\))', r"\g<1>", input_text)
