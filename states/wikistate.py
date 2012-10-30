@@ -99,12 +99,10 @@ class WikiState(State):
 
          return final_string
       else: #is birthday
-         dob = re.findall(r"DATE OF BIRTH *= *([^<]*)\n", input_text)
+         dob = re.findall(r"DATE OF BIRTH *= *([^<]*\|)", input_text)
          os.system("rm wiki.tmp") 
          if len(dob) < 1:
             return "I'm not sure when " + " ".join(context['name']) + " was born..."
          else:
-            print  "|"+ dob[0] + "|\n"
             return " ".join(context['name']) + " was born on " + dob[0]
-#            return ""
       
