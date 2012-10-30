@@ -4,12 +4,15 @@ Wiki parser
 """
 import nltk
 import os
+import calendar
 from nltk import pos_tag, word_tokenize
 from nltk.chunk import *
 from nltk.chunk.util import *
 from nltk.chunk.regexp import *
 from nltk.tree import Tree
 from state import State
+from HTMLParser import HTMLParser
+from datetime import datetime
 
 class WikiState(State):
 
@@ -31,7 +34,7 @@ class WikiState(State):
    def parser_results(candidates):
       name = None
       #tagged_words = pos_tag(input_text)
-      grammar = "NP: {((?:(?:<DT>)?(?:<NN[P]?[S]?>)+)(?:(?:<DT>|<IN>)*(?:<NN[P]?[S]?>)+)*)}"
+      grammar = "NP: {((?:(?:<NN[P]?[S]?>)+)(?:(?:<DT>|<IN>)*(?:<NN[P]?[S]?>)+)*)}"
       cp = RegexpParser(grammar)
       result = cp.parse(candidates)
 
@@ -61,7 +64,8 @@ class WikiState(State):
       
    @staticmethod
    def respond(context):
-      prefix = "\"http://en.wikipedia.org/w/api.php?format=dump&action=query&prop=revisions&rvprop=content&titles="
+      #prefix = "\"http://en.wikipedia.org/w/api.php?format=dump&action=query&prop=revisions&rvprop=content&titles="
+      prefix = "\"http://en.wikipedia.org/wiki/"
 
       page = '_'.join(context["name"])
 
@@ -81,30 +85,44 @@ class WikiState(State):
       #print input_text
 
       if not context['isBirthday']:
-         parsed_text = re.findall(r"<p>(.*?)<\/p>", input_text)
+         #clean_wiki = re.compile("^\|[^\n]*|^:[^\n]*|^;[^\n]*|^\*[^\n]*|<ref[^>]*>[^<]*</ref>|</?ref[^/>]*/?>|\[\[File:[^\]]*\]]|\[\[[^\|\]]*\||\[\[|\]\]|<[^/>]*/>|<!--[^-]*-->|{{[^}\n]*}};?|}}|{{[^\n]*|'''|&nbsp;|</?nowiki>", re.M)
+         #input_text = re.sub(clean_wiki, "", input_text)
+         #input_text = re.sub(r'(?:.|\n)*\["\*"\]=>\n\W*string\(\d+\)\W*"', "", input_text, 1)
+         #print input_text[:5000]
+         #input_text = input_text.split('\n')
+         #input_text = [line for line in input_text if len(line) > 250]
+         input_text = re.findall(r"<p>(.*?)<\/p>", input_text)
+         if len(input_text) == 0:
+            return "I don't know anything about " + " ".join(context['name'])
+         input_text = nltk.util.clean_html(input_text[0])
+         input_text = re.sub(r'\[(?:\s*\d+\s*|\s*[cC]itation [nN]eeded\s*)\]', "", input_text)
+         input_text = re.sub(r' +', " ", input_text)
+         input_text = re.sub(r' (-|,|\.|\))', r"\g<1>", input_text)
+         input_text = re.sub(r'(-|\() ', r"\g<1>", input_text)
+         input_text = re.sub(r'&\S+;', "", input_text)
 
-         if len(parsed_text) == 0:
-            return "I don't know anything about " + ' '.join(context['name'])
-
-         first_par =  parsed_text[0]
-
-         clean_first = nltk.util.clean_html(first_par)
-         clean_fist = re.sub("\(.*?(\(.*?\)).*?\)", "", clean_first)
-
-         pst = nltk.tokenize.punkt.PunktSentenceTokenizer().tokenize(clean_first)
-   
-         final_string = " ".join(pst[:2])
+         pst = nltk.tokenize.punkt.PunktSentenceTokenizer().tokenize(input_text)
+         
+         length = 0
+         final_string = ""
+         for sent in pst:
+            print sent
+            length += len(sent)
+            if length < 512:
+               final_string += " " + sent
 
          os.system("rm wiki.tmp") 
 
          return final_string
       else: #is birthday
-         dob = re.findall(r"DATE OF BIRTH *= *([^<]*)\n", input_text)
+         dob = re.findall(r'<span class="bday">([\d-]+)</span>', input_text)
+
          os.system("rm wiki.tmp") 
          if len(dob) < 1:
             return "I'm not sure when " + " ".join(context['name']) + " was born..."
          else:
-            print  "|"+ dob[0] + "|\n"
-            return " ".join(context['name']) + " was born on " + dob[0]
-#            return ""
+            date = datetime.strptime(dob[0], "%Y-%m-%d")
+            dob = calendar.month_name[date.month] + " " + str(date.day) + ", " + str(date.year)
+
+            return " ".join(context['name']) + " was born on " + dob
       
