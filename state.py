@@ -11,7 +11,7 @@ class State:
 
    @staticmethod
    def respond(context):
-      return "You forgot to fill out your respond method."
+      pass
 
    @staticmethod
    def nextStates():
@@ -30,25 +30,30 @@ class StateCollection:
 
       return False
 
-   def forceState(self, state, context={'_nick': ""}):
-      self.validStates[context['_nick']] = state.nextStates()
+   def forceState(self, state, context={}):
+      if context.get('_nick', None) is not None:
+         self.validStates[context['_nick']] = state.nextStates()
 
-      #self.sendMessage(context['_nick'], state.respond(context))
+      return state.respond(context)
 
    def query(self, nick, msg):
-      msg = pos_tag(word_tokenize(msg))
+      print msg
+      msg_tag = pos_tag(word_tokenize(msg))
 
       validStates = [w for w in self.states if self.validateState(w, self.validStates.get(nick, self.states))]
 
-      confidence = self.p.map(stateTest, [(msg, state) for state in validStates])
+      confidence = self.p.map(stateTest, [(msg_tag, state) for state in validStates])
 
       print confidence
 
       ((conf, context), state) = reduce(lambda x, y: x if x[0][0] > y[0][0] else y, confidence)
 
-      if conf == 0.0:
-         self.validStates = State
-         return "I have no idea what is going on"
+      if conf < 0.1:
+         if self.validStates[nick] != tuple([State]):
+            self.validStates[nick] = tuple([State])
+            return self.query(nick, msg)
+         else:
+            return "I have no idea what's going on"
 
       self.validStates[nick] = state.nextStates()
 

@@ -1,6 +1,7 @@
 from bot import Bot
 from ircadapter import TestBot
 from states.outreach import InitialOutreach
+import random
 
 class GustafoBot(Bot):
    def __init__(self, states, channel, nickname, server, port):
@@ -17,23 +18,21 @@ class GustafoBot(Bot):
       self.adapter.send_message(to_send)
 
    def get_users(self):
-      return self.adapter.channels[0][1].users()
+      #return self.adapter.channels[0][1].users()
+      return ["Andrewgulus"]      
 
    def on_join(self):
-      self.inactive.start()
-
-   def on_user_join(self):
-      return None
-
-   def on_user_exit(self):
-      return None
+      self.inactive['_chat'].start()
 
    def on_message(self, nick, msg):
+      self.inactive['_chat'].cancel()
       res = self.states.query(nick, msg)
       if (res) != None:
          self.send_message(nick, res)
 
    def on_inactive(self):
-      res = self.states.forceState(InitialOutreach)
+      users = self.get_users()
+      nick = users[random.randint(0, len(users) - 1)]
+      res = self.states.forceState(InitialOutreach, {'_nick': nick})
       if (res) != None:
          self.send_message(nick, res)
