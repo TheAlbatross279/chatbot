@@ -119,7 +119,7 @@ class WikiState(State):
  
          input_text = re.sub(r'\[(?:\s*\d+\s*|\s*[cC]itation [nN]eeded\s*)\]', "", input_text)
          input_text = re.sub(r' +', " ", input_text)
-         input_text = re.sub(r' (-|,|\.|\))', r"\g<1>", input_text)
+         input_text = re.sub(r' (-|,|\.|\)|:|;)', r"\g<1>", input_text)
          input_text = re.sub(r'(-|\() ', r"\g<1>", input_text)
          input_text = re.sub(r'&nbsp;', " ", input_text)
          input_text = re.sub(r'&\S+;', "", input_text)
