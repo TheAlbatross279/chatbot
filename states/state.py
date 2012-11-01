@@ -18,11 +18,11 @@ class State:
       return tuple([State])
 
 class StateCollection:
-   def __init__(self, states, initialState, workers=cpu_count()):
-      self.states = states
+   def __init__(self, workers=cpu_count()):
+      self.states = []
+      self.initial_states = []
       self.p = Pool(processes=workers)
       self.validStates = {}
-      self.initialState = initialState
 
    def validateState(self, state, validStates):
       for e in validStates:
@@ -39,13 +39,9 @@ class StateCollection:
 
    def query(self, nick, msg):
       print msg
-      if msg == 'forget':
-         self.valideStates = {}
-         return None
-
       msg_tag = pos_tag(word_tokenize(msg))
 
-      validStates = [w for w in self.states if self.validateState(w, self.validStates.get(nick, self.initialState))]
+      validStates = [w for w in self.states if self.validateState(w, self.validStates.get(nick, self.initial_states))]
 
       confidence = self.p.map(stateTest, [(msg_tag, state) for state in validStates])
 
@@ -53,7 +49,7 @@ class StateCollection:
 
       ((conf, context), state) = reduce(lambda x, y: x if x[0][0] > y[0][0] else y, confidence)
 
-      if conf < 0.0:
+      if conf < 0.1:
          if self.validStates[nick] != tuple([State]):
             self.validStates[nick] = tuple([State])
             return self.query(nick, msg)

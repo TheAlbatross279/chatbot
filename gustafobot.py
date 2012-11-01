@@ -19,7 +19,7 @@ class GustafoBot(Bot):
 
    def get_users(self):
       #return self.adapter.channels[0][1].users()
-      return ["Andrewgulus"]      
+      return ["foaad"]      
 
    def on_join(self):
       self.inactive['_chat'].start()

@@ -5,7 +5,7 @@ class Bot(object):
    def __init__(self, states, inactive_time=20.0):
       self.inactive = {}
       self.inactive['_chat'] = Timer(inactive_time, self.on_inactive)
-      self.states = StateCollection(states)
+      self.states = StateCollection(states, states[0:2])
 
       self.handlers = {'ON_USER_INACTIVE' :[],
                        'ON_INACTIVE'      :[],

@@ -20,9 +20,9 @@ class OutreachState(State):
 class InitialOutreach(OutreachState):
    @staticmethod
    def nextStates():
-      return tuple([InquiryState])
+      return tuple([SecondaryOutreach])
 
 class OutreachResponse(OutreachState):
    @staticmethod
    def nextStates():
-      return tuple([SecondaryOutreach])
+      return tuple([InquiryState])

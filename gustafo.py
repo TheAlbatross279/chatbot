@@ -11,14 +11,14 @@ from states.secondaryoutreach import SecondaryOutreach
 from gustafobot import GustafoBot
 
 def main():
-   states = [InitialOutreach,
+   states = [OutreachResponse,
              WikiState,
-             OutreachResponse,
+             InitialOutreach,
              InquiryState,
              SecondaryOutreach
             ]
 
-   state_coll = StateCollection(states)
+   state_coll = StateCollection(states, OutreachResponse)
 
    
    if len(sys.argv) != 4:
