@@ -3,13 +3,19 @@ from state import State
 class ILoveYouState(State):
     @staticmethod
     def recognize(msg):
-        iloveyou = "i love you"
-        if msg.lower() == iloveyou
+        iloveyou =  ["i", "love", "you"]
+        
+        if len(msg) < len(iloveyou):
+            return (0.0, {})
 
-        return (1.0, {'msg':"I love you too"})
+        for idx, w in enumerate(iloveyou):
+            if msg[idx][0].lower() != w:
+                   return (0.0, {})
+                   
+        return (1.0, {})
 
     @staticmethod
     def respond(context):
-        return context['msg'] + ", " + context['name'] + "!" 
+        return  "I love you too, " + context['_nick'] + "!" 
 
 ILoveYouState(True)
