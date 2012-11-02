@@ -88,5 +88,5 @@ class TestBot(SingleServerIRCBot):
 #none of the commands match, pass the text to the response function defined above
 #but first sleep a little
             time.sleep(3)
-            self.linkbot.on_message(nick, cmd)
+            self.linkbot.on_message(nick, 0, cmd)
 

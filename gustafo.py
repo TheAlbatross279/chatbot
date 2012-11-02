@@ -1,26 +1,9 @@
 import sys
 
-#State imports
-from state import StateCollection
-from states.wikistate import WikiState
-from states.outreach import InitialOutreach, OutreachResponse
-from states.inquiry import InquiryState
-from states.secondaryoutreach import SecondaryOutreach
-
 #import bot
 from gustafobot import GustafoBot
 
 def main():
-   states = [OutreachResponse,
-             WikiState,
-             InitialOutreach,
-             InquiryState,
-             SecondaryOutreach
-            ]
-
-   state_coll = StateCollection(states, OutreachResponse)
-
-   
    if len(sys.argv) != 4:
        print "Usage: testbot <server[:port]> <channel> <nickname>"
        sys.exit(1)
@@ -38,8 +21,7 @@ def main():
    channel = sys.argv[2]
    nickname = sys.argv[3]
 
-   bot = GustafoBot(states, channel, nickname, server, port)
-   bot.start()
+   GustafoBot(channel, nickname, server, port)
 
 if __name__ == "__main__":
    main()

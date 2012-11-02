@@ -3,9 +3,7 @@ import random
 from giveupstate import GiveUpState
 
 class SolicitResponse(State):
-    
-    @staticmethod
-    def respond(context):
+    def respond(self, context):
         solicitations = ["Hello?",
                          "You should really put an away message up...",
                          "Are you there?",
@@ -16,6 +14,7 @@ class SolicitResponse(State):
 
         return solicitations[rand_ndx]
 
-    @staticmethod
-    def nextState():
+    def nextState(self):
         return tuple([GiveUpState])
+
+SolicitResponse()

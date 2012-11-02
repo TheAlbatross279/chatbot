@@ -19,8 +19,7 @@ import string
 class WikiState(State):
 
    #finds birthday keywords and removes them, setting isbirthday to true
-   @staticmethod
-   def clear_birthday_words(input_text):
+   def clear_birthday_words(self, input_text):
       birthday_keywords = ['born', 'birthdate', 'birthday', 'birth', 'date']
       info_keywords = ['information', 'subject']
       candidates = []
@@ -40,8 +39,7 @@ class WikiState(State):
 
       return (candidates, isBirthday)
    
-   @staticmethod
-   def parser_results(candidates):
+   def parser_results(self, candidates):
       name = None
 
       #tagged_words = pos_tag(input_text)
@@ -60,23 +58,21 @@ class WikiState(State):
      
       return (name, foundNP)
 
-   @staticmethod
-   def recognize(cmd):
+   def recognize(self, cmd):
       #remove birthday keywords
-      (candidates, isBirthday) = WikiState.clear_birthday_words(cmd)
-      (name, foundNP) = WikiState.parser_results(candidates)
+      (candidates, isBirthday) = self.clear_birthday_words(cmd)
+      (name, foundNP) = self.parser_results(candidates)
       
       #if can't find noun phrase, try all results again
       if not foundNP:
-         (name, foundNP) = WikiState.parser_results(cmd)
+         (name, foundNP) = self.parser_results(cmd)
 
       if name == None:
          return (0, {})
       
       return (0.9, {'name': name, 'isBirthday': isBirthday})
       
-   @staticmethod
-   def respond(context):
+   def respond(self, context):
       #prefix = "\"http://en.wikipedia.org/w/api.php?format=dump&action=query&prop=revisions&rvprop=content&titles="
       prefix = "\"http://en.wikipedia.org/wiki/"
 
@@ -150,4 +146,5 @@ class WikiState(State):
             dob = calendar.month_name[date.month] + " " + str(date.day) + ", " + str(date.year)
 
             return " ".join(context['name']) + " was born on " + dob
-      
+
+WikiState(True)      
