@@ -26,7 +26,8 @@ class GustafoBot(Bot):
       rt = time.time()
 
       if rt - it < 3.0:
-         time.sleep(rt - it)
+         print "Sleep:", 3.0 - (rt - it)
+         time.sleep(3.0 - (rt - it))
 
       if res is not None:
          self.send_message(user, res)
