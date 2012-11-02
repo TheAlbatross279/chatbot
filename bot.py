@@ -1,4 +1,3 @@
-from threading import Timer
 from state import *
 
 class Bot(object):

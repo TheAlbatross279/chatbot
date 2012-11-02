@@ -7,7 +7,6 @@ def stateTest((msg, state)):
 class State:
    states = []
    initial_states = []
-#   p = Pool(processes=cpu_count())
    validStates = {}
 
    def __init__(self, isInitial=False):

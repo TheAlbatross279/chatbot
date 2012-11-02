@@ -1,6 +1,8 @@
 from bot import Bot
 from ircadapter import TestBot
+from state.state import State
 import random
+import time
 
 class GustafoBot(Bot):
    def __init__(self, channel, nickname, server, port):
@@ -16,4 +18,15 @@ class GustafoBot(Bot):
 
    def get_users(self):
       #return self.adapter.channels[0][1].users()
-      return ["foaad"]      
+      return ["foaad"]     
+
+   def on_message(self, user, timestamp, msg):
+      it = time.time()
+      res = State.query(user, msg)
+      rt = time.time()
+
+      if rt - it < 3.0:
+         time.sleep(rt - it)
+
+      if res is not None:
+         self.send_message(user, res)
