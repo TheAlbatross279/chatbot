@@ -10,6 +10,14 @@ class State:
    userState = {}
 
    @staticmethod
+   def forget():
+      State.userState = {}
+   
+   @staticmethod
+   def die():
+      pass
+
+   @staticmethod
    def register(state, isInitial=False):
       State.states.append(state)
       if isInitial:

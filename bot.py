@@ -4,6 +4,12 @@ class Bot(object):
    def __init__(self):
       pass
 
+   def forget(self):
+      pass
+
+   def die(self):
+      pass
+
    def send_message(self, nick, msg):
       pass
 

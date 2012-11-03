@@ -15,9 +15,25 @@ class GustafoBot(Bot):
       Bot.__init__(self) 
 
       self.idle = {}
+      self.resumeState = {}
 
       self.adapter = TestBot(self, channel, nickname, server, port)
       self.adapter.start()
+
+   def forget(self):
+      for timer in self.idle.values():
+         timer.cancel()
+
+      self.idle = {}
+      self.resumeState = {}
+      State.forget()
+
+      self.on_join()
+
+   def die(self):
+      State.die()
+      for timer in self.idle.values():
+         timer.cancel()
 
    def send_message(self, nick, msg):
       to_send = nick + ": " + msg
@@ -47,6 +63,7 @@ class GustafoBot(Bot):
 
    def on_user_inactive(self, nick):
       if State.userState[nick] is not SolicitResponse:
+         self.resumeState[nick] = State.userState[nick]
          res = State.forceState(SolicitResponse, {'_nick': nick})
          self.idle[nick] = Timer(15.0, self.on_user_inactive, [nick])
          self.idle[nick].start()
@@ -63,6 +80,8 @@ class GustafoBot(Bot):
       self.idle[GustafoBot.CHAT].cancel()
       if self.idle.get(user, None) is not None:
          self.idle[user].cancel()
+         if State.userState[user] is SolicitResponse:
+            State.userState[user] = self.resumeState[user]
 
       it = time.time()
       res = State.query(user, msg)

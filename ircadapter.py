@@ -75,6 +75,7 @@ class TestBot(SingleServerIRCBot):
             self.disconnect()
         elif cmd == "die":
             c.privmsg(self.channel, "You should hear what I learned about " + nick + " the other day...")
+            self.linkbot.die()
             self.die()
         elif cmd == "stats":
             for chname, chobj in self.channels.items():
@@ -89,6 +90,8 @@ class TestBot(SingleServerIRCBot):
                 voiced = chobj.voiced()
                 voiced.sort()
                 c.notice(nick, "Voiced: " + ", ".join(voiced))
+        elif cmd == "forget":
+                self.linkbot.forget()
         else:
 #none of the commands match, pass the text to the response function defined above
 #but first sleep a little
