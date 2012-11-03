@@ -7,7 +7,7 @@ def stateTest((msg, state)):
 class State:
    states = []
    initial_states = []
-   validStates = {}
+   userState = {}
 
    @staticmethod
    def register(state, isInitial=False):
@@ -26,7 +26,7 @@ class State:
    @staticmethod
    def forceState(state, context={}):
       if context.get('_nick', None) is not None:
-         State.validStates[context['_nick']] = state.nextStates()
+         State.userState[context['_nick']] = state
 
       return state.respond(context)
 
@@ -36,24 +36,28 @@ class State:
 
       msg_tag = pos_tag(word_tokenize(msg))
 
-      validStates = [w for w in State.states if State.validateState(w, State.validStates.get(nick, State.initial_states))]
+      currentState = State.userState.get(nick, None)
+      if currentState is None:
+         validStates = State.initial_states
+      else:
+         validStates = currentState.nextStates()
 
-      print validStates
+      print currentState
 
-      confidence = map(stateTest, [(msg_tag, state) for state in validStates])
+      confidence = map(stateTest, [(msg_tag, state) for state in State.states if State.validateState(state, validStates)])
 
       print confidence
 
       ((conf, context), state) = reduce(lambda x, y: x if x[0][0] > y[0][0] else y, confidence)
 
       if conf < 0.1:
-         if State.validStates[nick] != tuple([State]):
-            State.validStates[nick] = tuple([State])
+         if State.userState[nick] != State:
+            State.userState[nick] = State
             return State.query(nick, msg)
          else:
             return "I have no idea what's going on"
 
-      State.validStates[nick] = state.nextStates()
+      State.userState[nick] = state
 
       context['_nick'] = nick
       return state.respond(context)
