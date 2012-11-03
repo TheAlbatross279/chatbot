@@ -61,6 +61,11 @@ class TestBot(SingleServerIRCBot):
 #        else: (Message is not for us)
         return
 
+    def get_users(self):
+        if len(self.channels) > 0:
+            return self.channels[self.channel].users()
+        return None
+
 #processes commands
     def do_command(self, e, cmd):
         nick = nm_to_n(e.source())
@@ -69,7 +74,7 @@ class TestBot(SingleServerIRCBot):
         if cmd == "disconnect":
             self.disconnect()
         elif cmd == "die":
-            c.privmsg(self.channel,"WOW. How rude. PEACE!")
+            c.privmsg(self.channel, "You should hear what I learned about " + nick + " the other day...")
             self.die()
         elif cmd == "stats":
             for chname, chobj in self.channels.items():
