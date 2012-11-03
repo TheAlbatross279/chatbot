@@ -1,7 +1,8 @@
 from state import State
 
 class RedditState(State):
-   def recognize(self, msg):
+   @staticmethod
+   def recognize(msg):
       phrase = ("when", "does", "the", "narwhal", "bacon")
 
       if len(msg) < len(phrase):
@@ -13,7 +14,8 @@ class RedditState(State):
 
       return (1.0, {})
 
-   def respond(self, context):
+   @staticmethod
+   def respond(context):
       return "Midnight."
 
-RedditState(True)
+State.register(RedditState, True)

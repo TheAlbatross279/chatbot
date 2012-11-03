@@ -1,7 +1,8 @@
 from state import State
 
 class InquiryState(State):
-   def recognize(self, msg):
+   @staticmethod
+   def recognize(msg):
       well_being = ['how', 'are', 'is', '\'s', 'you', 'it', 'going', 'things', '?']
       activity = ['what', 'is', '\'s', 'up', 'sup', '?']
 
@@ -18,10 +19,11 @@ class InquiryState(State):
       else: 
          return (tot_activ / len(msg), {'type': 'activity'})
 
-   def respond(self, context):
+   @staticmethod
+   def respond(context):
       if context['type'] == 'well_being':
          return 'I\'m doing awful. Thanks for asking.'
       else:
          return 'Not much, what\'s up with you?'
 
-InquiryState()
+State.register(InquiryState)

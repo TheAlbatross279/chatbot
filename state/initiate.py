@@ -2,10 +2,12 @@ from state import State
 from secondaryoutreach import SecondaryOutreach
 
 class InitiateState(State):
-    def respond(self, context):
+    @staticmethod
+    def respond(context):
         return "Hello, " + context['_nick'] + "."
 
-    def nextState(self):
+    @staticmethod
+    def nextState():
         return tuple([SecondaryOutreach])
 
-InitiateState()
+State.register(InitiateState)

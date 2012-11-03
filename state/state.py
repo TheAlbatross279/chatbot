@@ -9,15 +9,16 @@ class State:
    initial_states = []
    validStates = {}
 
-   def __init__(self, isInitial=False):
-      State.states.append(self)
+   @staticmethod
+   def register(state, isInitial=False):
+      State.states.append(state)
       if isInitial:
-         State.initial_states.append(self.__class__)
+         State.initial_states.append(state)
 
    @staticmethod
    def validateState(state, validStates):
       for e in validStates:
-         if issubclass(state.__class__, e):
+         if issubclass(state, e):
             return True
 
       return False
@@ -67,17 +68,22 @@ class State:
       for state in states:
          state.onUserLeave(user, timestamp)
 
-   def recognize(self, msg):
+   @staticmethod
+   def recognize(msg):
       return (0, {})
 
-   def respond(self, context):
+   @staticmethod
+   def respond(context):
       pass
 
-   def nextStates(self):
+   @staticmethod
+   def nextStates():
       return tuple([State])
 
-   def onUserJoin(self, user, timestamp):
+   @staticmethod
+   def onUserJoin(user, timestamp):
       pass
 
-   def onUserLeave(self, user, timestamp):
+   @staticmethod
+   def onUserLeave(user, timestamp):
       pass

@@ -2,7 +2,8 @@ from state import State
 import random
 
 class SecondaryOutreach(State):
-    def recognize(self, msg):
+    @staticmethod
+    def recognize(msg):
       greeting_words = ['hi', 'hello', 'hey', 'hola', 'yo']
 
       for (w, tag) in msg:
@@ -11,7 +12,8 @@ class SecondaryOutreach(State):
 
       return (0, {})
 
-    def respond(self, context):
+    @staticmethod
+    def respond(context):
         
         #randomly choose how are your/
         inquiries = [ "How are you?", 
@@ -27,4 +29,4 @@ class SecondaryOutreach(State):
 
         return inquiries[rand_ndx]
 
-SecondaryOutreach()
+State.register(SecondaryOutreach)

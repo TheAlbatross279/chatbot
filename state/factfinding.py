@@ -10,4 +10,3 @@ class FindGossip(State):
         db = Database()
         db.add_row(context['tuple'])
         db.close()
-        

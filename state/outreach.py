@@ -3,7 +3,8 @@ from inquiry import InquiryState
 from secondaryoutreach import SecondaryOutreach
 
 class OutreachState(State):
-   def recognize(self, msg):
+   @staticmethod
+   def recognize(msg):
       greeting_words = ['hi', 'hello', 'hey', 'hola', 'yo']
 
       for (w, tag) in msg:
@@ -12,17 +13,20 @@ class OutreachState(State):
 
       return (0, {})
 
-   def respond(self, context):
+   @staticmethod
+   def respond(context):
       return "Hello, " + context['_nick'] + "."
 
 class InitialOutreach(OutreachState):
-   def nextStates(self):
+   @staticmethod
+   def nextStates():
       return tuple([SecondaryOutreach])
 
-InitialOutreach()
+State.register(InitialOutreach)
 
 class OutreachResponse(OutreachState):
-   def nextStates(self):
+   @staticmethod
+   def nextStates():
       return tuple([InquiryState])
 
-OutreachResponse(True)
+State.register(OutreachResponse, True)

@@ -2,7 +2,8 @@ from state import State
 import random
 
 class GiveUpState(State):
-    def respond(self, context):
+    @staticmethod
+    def respond(context):
         frustrated_responses = ["Well, fine. Be that way", 
                                 "Well... I'll catch you later then!",
                                 "G2G! TTYL!"]
@@ -11,4 +12,4 @@ class GiveUpState(State):
         
         return inquiries[rand_ndx]
 
-GiveUpState()
+State.register(GiveUpState)
