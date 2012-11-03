@@ -8,8 +8,8 @@ class GiveUpState(State):
                                 "Well... I'll catch you later then!",
                                 "G2G! TTYL!"]
 
-        rand_nsx = random.randint(0, len(frustrated_responses))
+        rand_ndx = random.randint(0, len(frustrated_responses) - 1)
         
-        return inquiries[rand_ndx]
+        return frustrated_responses[rand_ndx]
 
 State.register(GiveUpState)

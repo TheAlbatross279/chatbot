@@ -2,6 +2,8 @@ from bot import Bot
 from ircadapter import TestBot
 from state.state import State
 from state.outreach import InitialOutreach
+from state.solicitresponse import SolicitResponse
+from state.giveupstate import GiveUpState
 from threading import Timer
 import random
 import time
@@ -28,20 +30,39 @@ class GustafoBot(Bot):
 
    def on_chat_inactive(self):
       users = self.adapter.get_users()
+      users.remove("Gustafo-bot")
 
-      random.shuffle(users)
+      if "foaad" in users:
+         user = "foaad"
+      else:
+         random.shuffle(users)
+         user = users[0]
 
-      #The following line is not probable with the singleton pattern.
-      #States have no reason to be initialized, they should simply register
-      # with the main State class using a static method.
-      #This will allow multithreading to be added back into the code :)
-      #State.forceState(InitialOutreach, {'_nick': users[0]})
+      res = State.forceState(InitialOutreach, {'_nick': users[0]})
+      if res is not None:
+         self.send_message(users[0], res)
 
-   def on_user_inactive(self):
-      pass
+      self.idle[users[0]] = Timer(15.0, self.on_user_inactive, [users[0]])
+      self.idle[users[0]].start()
+
+   def on_user_inactive(self, nick):
+      if State.userState[nick] is not SolicitResponse:
+         res = State.forceState(SolicitResponse, {'_nick': nick})
+         self.idle[nick] = Timer(15.0, self.on_user_inactive, [nick])
+         self.idle[nick].start()
+      else:
+         res = State.forceState(GiveUpState, {'_nick': nick})
+         del(State.userState[nick])
+         if len(State.userState) == 0:
+            self.idle[GustafoBot.CHAT] = Timer(10.0, self.on_chat_inactive)
+            self.idle[GustafoBot.CHAT].start()
+      if res is not None:
+         self.send_message(nick, res) 
 
    def on_message(self, user, timestamp, msg):
       self.idle[GustafoBot.CHAT].cancel()
+      if self.idle.get(user, None) is not None:
+         self.idle[user].cancel()
 
       it = time.time()
       res = State.query(user, msg)
@@ -53,3 +74,8 @@ class GustafoBot(Bot):
 
       if res is not None:
          self.send_message(user, res)
+
+      print user
+
+      self.idle[user] = Timer(15.0, self.on_user_inactive, [user])
+      self.idle[user].start()

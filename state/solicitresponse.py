@@ -11,7 +11,7 @@ class SolicitResponse(State):
                          "AYT?",
                          "Hey, " + context['_nick'] + ", you there?" ]
 
-        rand_nsx = random.randint(0, len(solicitations))
+        rand_ndx = random.randint(0, len(solicitations) - 1)
 
         return solicitations[rand_ndx]
 
