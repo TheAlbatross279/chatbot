@@ -50,9 +50,11 @@ class GustafoBot(Bot):
 
       if "foaad" in users:
          user = "foaad"
-      else:
+      elif len(users) > 0:
          random.shuffle(users)
          user = users[0]
+      else:
+         return
 
       res = State.forceState(InitialOutreach, {'_nick': users[0]})
       if res is not None:
