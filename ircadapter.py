@@ -58,8 +58,9 @@ class TestBot(SingleServerIRCBot):
         a = e.arguments()[0].split(":", 1)
         if len(a) > 1 and irc_lower(a[0]) == irc_lower(self.connection.get_nickname()):
             self.do_command(e, a[1].strip())
-#        else: (Message is not for us)
-        return
+        else:
+            nick = nm_to_n(e.source())
+            self.linkbot.on_chat(nick, a[0], a[1].strip())
 
     def get_users(self):
         if len(self.channels) > 0:

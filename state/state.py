@@ -39,6 +39,10 @@ class State:
       return state.respond(context)
 
    @staticmethod
+   def monitor(t, f, msg):
+      pass
+
+   @staticmethod
    def query(nick, msg):
       print msg
 
