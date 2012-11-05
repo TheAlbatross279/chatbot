@@ -54,20 +54,20 @@ class GustafoBot(Bot):
          random.shuffle(users)
          user = users[0]
       else:
-         return
+         self.idle[GustafoBot.CHAT] = Timer(10.0, self.on_chat_inactive)
 
-      res = State.forceState(InitialOutreach, {'_nick': users[0]})
+      res = State.forceState(InitialOutreach, {'_nick': user})
       if res is not None:
-         self.send_message(users[0], res)
+         self.send_message(user, res)
 
-      self.idle[users[0]] = Timer(15.0, self.on_user_inactive, [users[0]])
-      self.idle[users[0]].start()
+      self.idle[user] = Timer(30.0, self.on_user_inactive, [user])
+      self.idle[user].start()
 
    def on_user_inactive(self, nick):
       if State.userState[nick] is not SolicitResponse:
          self.resumeState[nick] = State.userState[nick]
          res = State.forceState(SolicitResponse, {'_nick': nick})
-         self.idle[nick] = Timer(15.0, self.on_user_inactive, [nick])
+         self.idle[nick] = Timer(30.0, self.on_user_inactive, [nick])
          self.idle[nick].start()
       else:
          res = State.forceState(GiveUpState, {'_nick': nick})
@@ -98,5 +98,5 @@ class GustafoBot(Bot):
 
       print user
 
-      self.idle[user] = Timer(15.0, self.on_user_inactive, [user])
+      self.idle[user] = Timer(30.0, self.on_user_inactive, [user])
       self.idle[user].start()
