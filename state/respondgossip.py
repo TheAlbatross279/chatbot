@@ -1,4 +1,5 @@
 from gossip import Gossip
+from state import State
 
 class RespondGossip(Gossip):
     @staticmethod
@@ -12,4 +13,4 @@ class RespondGossip(Gossip):
         return (0.0, {})
 
 
-State.register(RespondGossip)
+State.register(RespondGossip, True)
