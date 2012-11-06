@@ -2,7 +2,7 @@
 Data structure to hold gossip
 """
 
-class fact(object):
+class Fact(object):
     
     def __init__(self, author, msg, recipient, knowers):
         self.author = author

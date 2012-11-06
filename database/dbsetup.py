@@ -29,3 +29,7 @@ class Database(object):
         self.c.execute('''CREATE TABLE facts
              (author text, msg text, recipient text, knowers text)''')
 
+
+if __name__ == '__main__':
+   db = Database()
+   db.drop_tables()

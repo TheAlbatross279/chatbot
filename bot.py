@@ -32,10 +32,7 @@ class Bot(object):
          self.send_message(user, res)
 
    def on_chat(self, f, t, msg):
-      res = state.State.monitor(f, t, msg)
-      
-      if res is not None:
-         self.send_message(user, res)
+      pass
 
    def on_message(self, user, timestamp, msg):
       res = state.State.query(user, msg)
