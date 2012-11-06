@@ -151,4 +151,4 @@ class WikiState(State):
 
             return " ".join(context['name']) + " was born on " + dob
 
-State.register(WikiState, True)
+#State.register(WikiState, True)
