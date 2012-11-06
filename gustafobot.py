@@ -11,6 +11,7 @@ import time
 
 class GustafoBot(Bot):
    CHAT = 0
+   TIMEOUT = 30.0
 
    def __init__(self, channel, nickname, server, port):
       Bot.__init__(self) 
@@ -42,7 +43,7 @@ class GustafoBot(Bot):
       self.adapter.send_message(to_send)
 
    def on_join(self):
-      self.idle[GustafoBot.CHAT] = Timer(10.0, self.on_chat_inactive)
+      self.idle[GustafoBot.CHAT] = Timer(GustafoBot.TIMEOUT, self.on_chat_inactive)
       self.idle[GustafoBot.CHAT].start()
 
    def on_chat_inactive(self):
@@ -55,20 +56,20 @@ class GustafoBot(Bot):
          random.shuffle(users)
          user = users[0]
       else:
-         self.idle[GustafoBot.CHAT] = Timer(10.0, self.on_chat_inactive)
+         self.idle[GustafoBot.CHAT] = Timer(GustafoBot.TIMEOUT, self.on_chat_inactive)
 
       res = State.forceState(InitialOutreach, {'_nick': user})
       if res is not None:
          self.send_message(user, res)
 
-      self.idle[user] = Timer(30.0, self.on_user_inactive, [user])
+      self.idle[user] = Timer(GustafoBot.TIMEOUT, self.on_user_inactive, [user])
       self.idle[user].start()
 
    def on_user_inactive(self, nick):
       if State.userState[nick] is not SolicitResponse:
          self.resumeState[nick] = State.userState[nick]
          res = State.forceState(SolicitResponse, {'_nick': nick})
-         self.idle[nick] = Timer(30.0, self.on_user_inactive, [nick])
+         self.idle[nick] = Timer(GustafoBot.TIMEOUT, self.on_user_inactive, [nick])
          self.idle[nick].start()
       else:
          res = State.forceState(GiveUpState, {'_nick': nick})
@@ -99,7 +100,7 @@ class GustafoBot(Bot):
 
       print user
 
-      self.idle[user] = Timer(30.0, self.on_user_inactive, [user])
+      self.idle[user] = Timer(GustafoBot.TIMEOUT, self.on_user_inactive, [user])
       self.idle[user].start()
 
    def on_chat(self, t, f, msg):
