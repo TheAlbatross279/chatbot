@@ -104,9 +104,11 @@ class GustafoBot(Bot):
       self.idle[user].start()
 
    def on_chat(self, t, f, msg):
+      knowers = self.adapter.get_users()
+      knowers.remove("Gustafo-bot")
       context = {'author': f,
                  'recipient': t,
                  'msg': msg,
-                 'knowers': self.adapter.get_users()}
+                 'knowers': knowers}
 
       State.forceState(FindGossip, context)
