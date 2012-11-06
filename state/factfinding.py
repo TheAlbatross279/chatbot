@@ -11,6 +11,6 @@ class FindGossip(State):
 
         db = Database()
         db.add_row(tup)
-        db.close()
+        db.close_conn()
 
 State.register(FindGossip)

@@ -2,7 +2,7 @@ import sqlite3
 
 class Database(object):
     def __init__(self):
-        self.connection = sqlite3.connect('gossip.db')
+        self.connection = sqlite3.connect('database/gossip.db')
         self.c = self.connection.cursor()
 
     def add_row(self, values):
@@ -29,7 +29,12 @@ class Database(object):
         self.c.execute('''CREATE TABLE facts
              (author text, msg text, recipient text, knowers text)''')
 
+    def build_tables(self):
+        self.c.execute('''CREATE TABLE facts
+             (author text, msg text, recipient text, knowers text)''')
+
+
 
 if __name__ == '__main__':
    db = Database()
-   db.drop_tables()
+   db.build_tables()
