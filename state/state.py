@@ -76,12 +76,14 @@ class State:
 
    @staticmethod
    def userJoin(user, timestamp):
-      for state in states:
+      print user + " joined the channel!"
+      for state in State.states:
          state.onUserJoin(user, timestamp)
 
    @staticmethod
    def userLeave(user, timestamp):
-      for state in states:
+      print user + " left the channel...." 
+      for state in State.states:
          state.onUserLeave(user, timestamp)
 
    @staticmethod

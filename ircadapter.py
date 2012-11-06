@@ -32,6 +32,8 @@ The known commands are:
 from ircbot import SingleServerIRCBot
 from irclib import nm_to_n, nm_to_h, irc_lower, ip_numstr_to_quad, ip_quad_to_numstr
 import time #mainly for the sleep() function
+from datetime import datetime
+import re
 
 class TestBot(SingleServerIRCBot):
     def __init__(self, linkbot, channel, nickname, server, port=6667):
@@ -49,6 +51,18 @@ class TestBot(SingleServerIRCBot):
     def on_welcome(self, c, e):
         c.join(self.channel)
         self.linkbot.on_join()
+
+    def on_join(self, c, e):
+        src = e.source()
+        nick = re.sub("!(.*)", "", src)
+        if(nick != 'Gustafo-bot'):
+            self.linkbot.on_user_join(nick, datetime.today())
+
+
+    def on_part(self, c, e):
+        src = e.source()
+        nick = re.sub("!(.*)", "", src)
+        self.linkbot.on_user_exit(nick, datetime.today())
 
     def on_privmsg(self, c, e):
         self.do_command(e, e.arguments()[0])
