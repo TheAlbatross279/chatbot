@@ -4,7 +4,7 @@ from gossip import Gossip
 class UserResponse(Gossip):
     @staticmethod
     def recognize(msg):
-      affirmative_words = ['yes', 'ya', 'sure', 'maybe', 'always']
+      affirmative_words = ['yes', 'ya', 'sure', 'maybe', 'always', 'yeah']
       negative_words = ['no', 'nope', 'never']
       isAffirmative = False   
    
