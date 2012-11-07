@@ -40,7 +40,8 @@ class Gossip(State):
                             + "much as me, but I do not have any more gossip" \
                             + "to tell you now.",
                             "I think you should go talk to others in this room," \
-                            +   "because I am all out of gossip."]
+                            +   "because I am all out of gossip.", 
+                            "Hmmm... well, I don't really know anything right now...."]
 
                rand_ndx = random.randint(0, len(responses) - 1)
 
@@ -49,7 +50,10 @@ class Gossip(State):
            #choices for leading off gossip
            prefix = ["Did you know that ",
                      "I heard that ", 
-                     "A little birdy told me that "]
+                     "A little birdy told me that ", 
+                     "Someone told me that ", 
+                     "You didn't hear it from me, but I heard that ", 
+                     "Don't tell anyone that "]
         
            gossip = []
 
