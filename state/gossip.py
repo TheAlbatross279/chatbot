@@ -25,13 +25,16 @@ class Gossip(State):
         rand_ndx2 = random.randint(0, len(prefix)-1)        
 
         gossip = []
+
         #if it's a speicifc query
         if subject != None:
-            specific_results = [result for result in results if subject in result]
-            rand_ndx = random.randint(0, len(specific_results)-1)            
-            gossip = specific_results[rand_ndx]            
+            if subject in State.users:
+                return "Oh, " + subject + " is just so nice... nothing to say about them!"
+            else:
+                specific_results = [result for result in results if subject in result]
+                rand_ndx = random.randint(0, len(specific_results)-1)            
+                gossip = specific_results[rand_ndx]            
                 
-    
         else: #randomly grab facts
             rand_ndx = random.randint(0, len(results)-1)            
             gossip = results[rand_ndx]            
