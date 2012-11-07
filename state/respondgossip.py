@@ -25,9 +25,10 @@ class RespondGossip(Gossip):
             users.append(result[0])
             knowers = result[2].split(";")
             for knower in knowers:
-                users.append(knower)
-            print users
+                users.append(knower)                
 
+        users = set(users)
+        
         for (ndx, m) in enumerate(msg):
             if m[0] in keywords:
                 count+=1

@@ -33,7 +33,15 @@ class Gossip(State):
                if State.users != None and subject in State.users:
                    return "Oh, " + subject + " is just so nice... nothing to say about them!"
                else:
-                   specific_results = [result for result in results if subject in result]
+                   specific_results = []
+                   for result in results:
+                       if subject in result:
+                           specific_results.append(result)
+                       else: 
+                           tokens = result[1].split(" ")
+                           for token in tokens:
+                               if subject.lower() == token.lower():
+                                   specific_results.append(result)
                    rand_ndx = random.randint(0, len(specific_results)-1)            
                    gossip = specific_results[rand_ndx]                
            else: #randomly grab facts
