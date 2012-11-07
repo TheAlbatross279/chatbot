@@ -26,7 +26,6 @@ class RespondGossip(Gossip):
             knowers = result[2].split(";")
             for knower in knowers:
                 users.append(knower)
-            
 
         users = set(users)
         
@@ -37,8 +36,7 @@ class RespondGossip(Gossip):
                 isGossip = True
             elif (State.users != None and  m[0] in State.users) or m[0] in users:
                 isSpecific = True
-                subject = m[0]
-                
+                subject = m[0]                
 
         confidence = 0.0
         #confidence is high that it's gossip

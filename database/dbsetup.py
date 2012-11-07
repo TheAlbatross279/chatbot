@@ -24,6 +24,10 @@ class Database(object):
             results.append(row)
 
         return results
+
+    def update(self, update_statement):
+        self.c.execute(update_statement)
+
     def drop_tables(self):
         self.c.execute("DROP TABLE facts")
         self.c.execute('''CREATE TABLE facts

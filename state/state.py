@@ -57,6 +57,7 @@ class State:
 
       print currentState
 
+
       confidence = map(stateTest, [(msg_tag, state) for state in State.states if State.validateState(state, validStates)])
 
       print confidence
