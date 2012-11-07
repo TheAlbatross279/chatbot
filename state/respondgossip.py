@@ -25,7 +25,8 @@ class RespondGossip(Gossip):
             users.append(result[0])
             knowers = result[2].split(";")
             for knower in knowers:
-                users.append(knower)                
+                users.append(knower)
+            
 
         users = set(users)
         
@@ -34,9 +35,10 @@ class RespondGossip(Gossip):
                 count+=1
             elif m[0] in tell_me_gossip:
                 isGossip = True
-            elif m[0] in users:
+            elif (State.users != None and  m[0] in State.users) or m[0] in users:
                 isSpecific = True
                 subject = m[0]
+                
 
         confidence = 0.0
         #confidence is high that it's gossip
