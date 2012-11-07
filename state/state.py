@@ -5,6 +5,7 @@ def stateTest((msg, state)):
    return (state.recognize(msg), state)
 
 class State:
+   users = []
    states = []
    initial_states = []
    userState = {}
