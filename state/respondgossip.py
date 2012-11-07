@@ -16,20 +16,24 @@ class RespondGossip(Gossip):
         #LIST OF USERS
         users = []
 
+        #get all possible facts 
         query = '''SELECT * FROM facts'''
         db = Database()
         results = db.query(query)
         db.close_conn()
 
+        #generate a list of users mentioned in the db
         for result in results:
             users.append(result[0])
             knowers = result[2].split("; ")
             for knower in knowers:
                 users.append(knower)
 
+        #turn users into set
         users = set(users)
         contains_about = False
 
+        #for each word in the message, determine if is keyword
         for (ndx, m) in enumerate(msg):
             if contains_about == True:
                 isSpecific = True
@@ -52,7 +56,8 @@ class RespondGossip(Gossip):
         #confidence is high that it's gossip
         if isGossip:
             confidence = 1
-        elif isSpecific:
+        #if we know the query is targeted, we have high confidence
+        elif isSpecific: 
             confidence = 1
         #we're a little less confident it's gossip
         else:
