@@ -1,6 +1,6 @@
 from gossip import Gossip
 from state import State
-
+from database.dbsetup import Database
 class RespondGossip(Gossip):
     @staticmethod
     def recognize(msg):
@@ -15,6 +15,18 @@ class RespondGossip(Gossip):
 
         #TODO NEED LIST OF USERS
         users = []
+
+        query = '''SELECT * FROM facts'''
+        db = Database()
+        results = db.query(query)
+        db.close_conn()
+
+        for result in results:
+            users.append(result[0])
+            knowers = result[2].split(";")
+            for knower in knowers:
+                users.append(knower)
+            print users
 
         for (ndx, m) in enumerate(msg):
             if m[0] in keywords:

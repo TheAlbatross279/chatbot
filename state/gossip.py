@@ -15,7 +15,8 @@ class Gossip(State):
         query = '''SELECT * FROM facts'''
         db = Database()
         results = db.query(query)
-        
+        db.close_conn()
+
         prefix = ["Did you know that ",
                   "I heard that ", 
                   "A little birdy told me that "]
@@ -29,7 +30,8 @@ class Gossip(State):
             specific_results = [result for result in results if subject in result]
             rand_ndx = random.randint(0, len(specific_results)-1)            
             gossip = specific_results[rand_ndx]            
-            
+                
+    
         else: #randomly grab facts
             rand_ndx = random.randint(0, len(results)-1)            
             gossip = results[rand_ndx]            
@@ -39,7 +41,10 @@ class Gossip(State):
         print gossip
         print response
 
-        return response
+        if len(gossip) == 0:
+            return "Hmmm... well, I don't really know anything right now...."
+        else:
+            return response
         
 
 State.register(Gossip, True)
