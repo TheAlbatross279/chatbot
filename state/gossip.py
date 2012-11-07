@@ -37,10 +37,10 @@ class Gossip(State):
                responses = ["You already know everything I know!",
 
                             "I can not believe you enjoy gossip as" \
-                            + "much as me, but I do not have any more gossip" \
-                            + "to tell you now.",
+                            + " much as me, but I do not have any more gossip" \
+                            + " to tell you now.",
                             "I think you should go talk to others in this room," \
-                            +   "because I am all out of gossip.", 
+                            +   " because I am all out of gossip.", 
                             "Hmmm... well, I don't really know anything right now...."]
 
                rand_ndx = random.randint(0, len(responses) - 1)
