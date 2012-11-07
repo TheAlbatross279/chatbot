@@ -15,7 +15,7 @@ class SolicitUser(State):
         return solicitations[rand_ndx]
 
     @staticmethod
-    def nextState():
+    def nextStates():
         return tuple([UserResponse])
 
 State.register(SolicitUser)
