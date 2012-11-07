@@ -44,7 +44,7 @@ class GustafoBot(Bot):
       self.adapter.send_message(to_send)
 
    def on_join(self):
-      state.State.users = self.get_users()
+      State.users = self.get_users()
 
       self.idle[GustafoBot.CHAT] = Timer(GustafoBot.TIMEOUT, self.on_chat_inactive)
       self.idle[GustafoBot.CHAT].start()
