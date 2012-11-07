@@ -11,20 +11,13 @@ class UserResponse(Gossip):
       for (w, tag) in msg:
          if w.lower() in affirmative_words:
             isAffirmative = True
-            return (1, {'isAffirmative': isAffirmative})
+            return (1, {'isAffirmative': isAffirmative, specific : False})
 
       for (w, tag) in msg:
          if w.lower() in negative_words:
             isAffirmative = False
-            return (1, {'isAffirmative': isAffirmative})
+            return (1, {'isAffirmative': isAffirmative, specific : False})
 
       return (0, {})
-
-    #@staticmethod
-    #def nextState(context):
-    #   return tuple([Gossip])
-        #if context['isAffirmative']:
-        #   return tuple([Gossip])
-        #return tuple([Gossip])
 
 State.register(UserResponse)
