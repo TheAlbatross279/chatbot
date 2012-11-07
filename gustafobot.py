@@ -65,13 +65,15 @@ class GustafoBot(Bot):
 
       State.forceState(FindGossip, context)
 
-   def on_user_exit(self, nick, time):
+   def on_user_exit(self, nick, timestamp):
       print "##### EXIT #####"
 
       knowers = self.adapter.get_users()
       knowers.remove(self.adapter.nickname)
 
-      msg = "left at " + str(time)
+      timestamp = time.strftime("%X", time.localtime())
+
+      msg = "left at " + timestamp
 
       context = {'author': nick,
                  'recipient': "",
