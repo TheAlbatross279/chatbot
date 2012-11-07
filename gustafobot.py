@@ -5,6 +5,7 @@ from state.outreach import InitialOutreach
 from state.solicitresponse import SolicitResponse
 from state.giveupstate import GiveUpState
 from state.factfinding import FindGossip
+from state.solicituser import SolicitUser
 from threading import Timer
 import random
 import time
@@ -69,6 +70,7 @@ class GustafoBot(Bot):
       if State.userState[nick] is not SolicitResponse:
          self.resumeState[nick] = State.userState[nick]
          res = State.forceState(SolicitResponse, {'_nick': nick})
+         #res = State.forceState(SolicitUser,{'_nick': nick})
          self.idle[nick] = Timer(GustafoBot.TIMEOUT, self.on_user_inactive, [nick])
          self.idle[nick].start()
       else:
@@ -105,6 +107,10 @@ class GustafoBot(Bot):
 
    def on_chat(self, t, f, msg):
       knowers = self.adapter.get_users()
+<<<<<<< HEAD
+=======
+      #knowers.remove("Gustafo-bot")
+>>>>>>> 08306e541d046fdf3cf143aad1513211f9836d86
       knowers.remove(self.adapter.nickname)
       context = {'author': f,
                  'recipient': t,
