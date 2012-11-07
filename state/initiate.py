@@ -7,7 +7,7 @@ class InitiateState(State):
         return "Hello, " + context['_nick'] + "."
 
     @staticmethod
-    def nextState():
+    def nextStates():
         return tuple([SecondaryOutreach])
 
 State.register(InitiateState)
