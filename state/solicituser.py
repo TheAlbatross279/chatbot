@@ -18,4 +18,4 @@ class SolicitUser(State):
     def nextState():
         return tuple([UserResponse])
 
-#State.register(SolicitUser)
+State.register(SolicitUser)
