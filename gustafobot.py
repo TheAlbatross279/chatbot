@@ -91,6 +91,7 @@ class GustafoBot(Bot):
       else:
          res = State.forceState(GiveUpState, {'_nick': nick})
          del(State.userState[nick])
+         del(self.idle[nick])
          if len(State.userState) == 0:
             self.idle[GustafoBot.CHAT] = Timer(10.0, self.on_chat_inactive)
             self.idle[GustafoBot.CHAT].start()

@@ -35,10 +35,13 @@ class Gossip(State):
            if len(results) == 0:
                db.close_conn()
                responses = ["You already know everything I know!",
-                            "I can not believe you enjoy gossip as much as me, "\
-                            "but I do not have any more gossip to tell you now.",
-                            "I think you should go talk to others in this room,"\
-                                "because I am all out of gossip."]
+
+                            "I can not believe you enjoy gossip as" \
+                            + " much as me, but I do not have any more gossip" \
+                            + " to tell you now.",
+                            "I think you should go talk to others in this room," \
+                            +   " because I am all out of gossip.", 
+                            "Hmmm... well, I don't really know anything right now...."]
 
                rand_ndx = random.randint(0, len(responses) - 1)
 
@@ -47,7 +50,10 @@ class Gossip(State):
            #choices for leading off gossip
            prefix = ["Did you know that ",
                      "I heard that ", 
-                     "A little birdy told me that "]
+                     "A little birdy told me that ", 
+                     "Someone told me that ", 
+                     "You didn't hear it from me, but I heard that ", 
+                     "Don't tell anyone that "]
         
            gossip = []
 
@@ -84,17 +90,31 @@ class Gossip(State):
            #select prefix
            rand_ndx2 = random.randint(0, len(prefix)-1)        
 
+           response = ""
            #generate response
-           response = prefix[rand_ndx2] + gossip[2] + " told "  + \
-               gossip[0] + ", \"" + gossip[1] + "\"!"
+           if gossip[0] == None:
+               response = prefix[rand_ndx2] + gossip[2] + " " + gossip[1] + "!"  
+           else: 
+               response = prefix[rand_ndx2] + gossip[2] + " told "  + \
+                   gossip[0] + ", \"" + gossip[1] + "\"!"
            #if you didn't find any random facts
            if len(gossip) == 0:
                db.close_conn()
                return "Hmmm... well, I don't really know anything right now...."
            else:
                #update the knowers to include the user asking for gossip
-               knowers = gossip[3] + "; " + context['_nick']
+               knowers = gossip[3].split("; ") 
+               knowers.append(context['_nick'])
                print knowers
+               
+               #add all users in the room to the knowers
+               if State.users != None:
+                   for user in State.users:
+                       knowers.append( user)
+
+               knowers = set(knowers)
+               print knowers
+               knowers = "; ".join(knowers)
                update_statement = "UPDATE facts SET knowers = \'" + knowers + \
                                   "\' WHERE author= \'" + gossip[0] + \
                                   "\' AND msg= \'" + gossip[1] + \
