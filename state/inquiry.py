@@ -34,14 +34,21 @@ class InquiryState(State):
                           "I have some gossip, would you like me to share it with you?"]
          rand_ndx = random.randint(0, len(solicitations) - 1)
 
-         return 'I\'m doing awful. Thanks for asking. ' + solicitations[rand_ndx]
+
+         responses = ["I\'m doing awful. Thanks for asking. But maybe you could help. ",
+                      "I am doing great, I keep hearing all these interesting rumors. ",
+                      "Not bad, Could be better "]
+
+         rand_ndy = random.randint(0, len(responses) - 1)
+
+         return responses[rand_ndy] + solicitations[rand_ndx]
       else:
          InquiryState.responce_type = 0
          return 'Not much, what\'s up with you?'
 
    @staticmethod
    def nextStates():
-       if InquiryState.responce_type:
-           return tuple([SolicitUser])
+   #if InquiryState.responce_type:
+      return tuple([SolicitUser])
 
 State.register(InquiryState)

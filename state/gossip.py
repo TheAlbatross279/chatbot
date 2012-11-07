@@ -27,7 +27,13 @@ class Gossip(State):
                    
            if len(results) == 0:
                db.close_conn()
-               return "You already know everything I know!"
+               responses = ["You already know everything I know!",
+                            "I can not believe you enjoy gossip as much as me, but I do not have any more gossip to tell you now.",
+                            "I think you should go talk to others in this room, because I am all out of gossip."]
+
+               rand_ndx = random.randint(0, len(responses) - 1)
+
+               return responses[rand_ndx]
 
            prefix = ["Did you know that ",
                      "I heard that ", 
@@ -84,6 +90,12 @@ class Gossip(State):
                db.close_conn()
                return response
         else:
-            return "Too bad... I had something really juicy!"
+            responses = ["Too bad... I had something really juicy!",
+                         "No gossip? Guess I'll have to go tell someone else this big secret.",
+                         "Do not worry, I will not tell anyone that you do not like to gossip..."]
+
+            rand_ndx = random.randint(0, len(responses) - 1)
+
+            return responses[rand_ndx]
 
 State.register(Gossip, True)
