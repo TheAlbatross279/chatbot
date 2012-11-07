@@ -92,7 +92,7 @@ class Gossip(State):
 
            response = ""
            #generate response
-           if gossip[0] == None:
+           if gossip[0] == "":
                response = prefix[rand_ndx2] + gossip[2] + " " + gossip[1] + "!"  
            else: 
                response = prefix[rand_ndx2] + gossip[2] + " told "  + \
