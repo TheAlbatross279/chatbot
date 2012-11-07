@@ -90,9 +90,13 @@ class Gossip(State):
            #select prefix
            rand_ndx2 = random.randint(0, len(prefix)-1)        
 
+           response = ""
            #generate response
-           response = prefix[rand_ndx2] + gossip[2] + " told "  + \
-               gossip[0] + ", \"" + gossip[1] + "\"!"
+           if gossip[0] == None:
+               response = prefix[rand_ndx2] + gossip[2] + " " + gossip[1] + "!"  
+           else: 
+               response = prefix[rand_ndx2] + gossip[2] + " told "  + \
+                   gossip[0] + ", \"" + gossip[1] + "\"!"
            #if you didn't find any random facts
            if len(gossip) == 0:
                db.close_conn()
