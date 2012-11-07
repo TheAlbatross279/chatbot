@@ -8,9 +8,11 @@ class Gossip(State):
     def respond(context):
 
         subject = None
-        #if it's a targeted query, get the subject of the gossip
-        if context['specific'] == True:
-            subject = context['subject']
+
+        if 'isAffirmative' not in context:
+           #if it's a targeted query, get the subject of the gossip
+           if context['specific'] == True:
+               subject = context['subject']
         
         query = '''SELECT * FROM facts'''
         db = Database()
