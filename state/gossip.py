@@ -9,7 +9,7 @@ class Gossip(State):
 
         subject = None
 
-        if context['isAffirmative]' == True:
+        if context['isAffirmative'] == True:
            #if it's a targeted query, get the subject of the gossip
            if context['specific'] == True:
                subject = context['subject']
@@ -30,7 +30,7 @@ class Gossip(State):
 
            #if it's a speicifc query
            if subject != None:
-               if len(State.users) != 0 && subject in State.users:
+               if len(State.users) != 0 and subject in State.users:
                    return "Oh, " + subject + " is just so nice... nothing to say about them!"
                else:
                    specific_results = [result for result in results if subject in result]
@@ -42,13 +42,13 @@ class Gossip(State):
 
            response = prefix[rand_ndx2] + gossip[2] + " told " +  gossip[0] + ", \"" + gossip[1] + "\"!"
 
-            print gossip
-            print response
+           print gossip
+           print response
 
-            if len(gossip) == 0:
-                return "Hmmm... well, I don't really know anything right now...."
-            else:
-                return response
+           if len(gossip) == 0:
+               return "Hmmm... well, I don't really know anything right now...."
+           else:
+               return response
         else:
             return "Too bad... I had something really juicy!"
 
