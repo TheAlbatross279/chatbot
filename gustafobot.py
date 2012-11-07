@@ -6,6 +6,7 @@ from state.solicitresponse import SolicitResponse
 from state.giveupstate import GiveUpState
 from state.factfinding import FindGossip
 from state.solicituser import SolicitUser
+from database.dbsetup import Database
 from threading import Timer
 import random
 import time
@@ -30,6 +31,10 @@ class GustafoBot(Bot):
       self.idle = {}
       self.resumeState = {}
       State.forget()
+
+      db = Database()
+      db.drop_tables()
+      db.close_conn()
 
       self.on_join()
 
