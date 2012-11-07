@@ -48,7 +48,7 @@ class GustafoBot(Bot):
       self.idle[GustafoBot.CHAT].start()
 
    def on_chat_inactive(self):
-      State.users = self.get_users()
+      State.users = self.adapter.get_users()
 
       users = self.adapter.get_users()
       users.remove(self.adapter.nickname)
@@ -69,7 +69,7 @@ class GustafoBot(Bot):
       self.idle[user].start()
 
    def on_user_inactive(self, nick):
-      State.users = self.get_users()
+      State.users = self.adapter.get_users()
 
       if State.userState[nick] is not SolicitResponse:
          self.resumeState[nick] = State.userState[nick]
@@ -95,7 +95,8 @@ class GustafoBot(Bot):
 
       it = time.time()
 
-      State.users = self.get_users()
+      print self.adapter.get_users()
+      State.users = self.adapter.get_users()
       res = State.query(user, msg)
 
       rt = time.time()
