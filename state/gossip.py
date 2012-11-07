@@ -35,9 +35,8 @@ class Gossip(State):
            if len(results) == 0:
                db.close_conn()
                responses = ["You already know everything I know!",
-                            "I can not believe you enjoy gossip as" \
-                            "much as me, but I do not have any more gossip" \ 
-                            "to tell you now.",
+                            "I can not believe you enjoy gossip as much as me, "\
+                            "but I do not have any more gossip to tell you now.",
                             "I think you should go talk to others in this room,"\
                                 "because I am all out of gossip."]
 
