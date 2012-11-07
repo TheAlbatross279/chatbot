@@ -56,7 +56,7 @@ class RespondGossip(Gossip):
             confidence = 1
         #we're a little less confident it's gossip
         else:
-            confidence = count/len(keywords) + 0.4
+            confidence = count/len(keywords) 
             
         return (confidence, {'specific': isSpecific, 
                              'subject': subject, 
