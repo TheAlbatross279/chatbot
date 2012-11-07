@@ -39,7 +39,7 @@ class TestBot(SingleServerIRCBot):
     def __init__(self, linkbot, channel, nickname, server, port=6667):
         SingleServerIRCBot.__init__(self, [(server, port)], nickname, nickname)
         self.channel = channel
-
+        self.nickname = nickname
         self.linkbot = linkbot
 
     def send_message(self, msg):
@@ -55,7 +55,7 @@ class TestBot(SingleServerIRCBot):
     def on_join(self, c, e):
         src = e.source()
         nick = re.sub("!(.*)", "", src)
-        if(nick != 'Gustafo-bot'):
+        if(nick != self.nickname):
             self.linkbot.on_user_join(nick, datetime.today())
 
 
