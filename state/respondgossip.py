@@ -5,7 +5,7 @@ class RespondGossip(Gossip):
     @staticmethod
     def recognize(msg):
         tell_me_gossip = ["gossip", "secret"]
-        keywords = [, "tell", "me", "do", "you", "know"]
+        keywords = ["tell", "me", "do", "you", "know"]
         count = 0
         isGossip = False
 
@@ -37,4 +37,4 @@ class RespondGossip(Gossip):
                              'subject': subject}
 
 
-State.register(RespondGossip, True)
+State.register(RespondGossip)
