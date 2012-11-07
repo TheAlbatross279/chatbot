@@ -1,7 +1,7 @@
 from state import State
 from gossip import Gossip
 
-class UserResponse(State):
+class UserResponse(Gossip):
     @staticmethod
     def recognize(msg):
       affirmative_words = ['yes', 'ya', 'sure', 'maybe', 'always']
@@ -20,11 +20,11 @@ class UserResponse(State):
 
       return (0, {})
 
-    @staticmethod
-    def nextState(context):
-        return tuple([Gossip])
+    #@staticmethod
+    #def nextState(context):
+    #   return tuple([Gossip])
         #if context['isAffirmative']:
         #   return tuple([Gossip])
         #return tuple([Gossip])
 
-#State.register(UserResponse)
+State.register(UserResponse)
