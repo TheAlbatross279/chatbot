@@ -11,12 +11,12 @@ class UserResponse(Gossip):
       for (w, tag) in msg:
          if w.lower() in affirmative_words:
             isAffirmative = True
-            return (1, {'isAffirmative': isAffirmative, specific : False})
+            return (1, {'isAffirmative': isAffirmative, 'specific' : False})
 
       for (w, tag) in msg:
          if w.lower() in negative_words:
             isAffirmative = False
-            return (1, {'isAffirmative': isAffirmative, specific : False})
+            return (1, {'isAffirmative': isAffirmative, 'specific' : False})
 
       return (0, {})
 
