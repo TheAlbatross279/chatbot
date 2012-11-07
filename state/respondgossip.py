@@ -34,7 +34,7 @@ class RespondGossip(Gossip):
             
         
         return (confidence, {'specific': isSpecific, 
-                             'subject': subject}
+                             'subject': subject})
 
 
-State.register(RespondGossip)
+State.register(RespondGossip, True)
