@@ -46,7 +46,8 @@ class RespondGossip(Gossip):
             confidence = count/len(keywords)
             
         return (confidence, {'specific': isSpecific, 
-                             'subject': subject})
+                             'subject': subject, 
+                             'isAffirmative' : True})
 
 
 State.register(RespondGossip, True)

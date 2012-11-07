@@ -30,7 +30,7 @@ class Gossip(State):
 
            #if it's a speicifc query
            if subject != None:
-               if len(State.users) != 0 and subject in State.users:
+               if State.users != None and subject in State.users:
                    return "Oh, " + subject + " is just so nice... nothing to say about them!"
                else:
                    specific_results = [result for result in results if subject in result]
