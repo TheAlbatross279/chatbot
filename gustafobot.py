@@ -44,12 +44,12 @@ class GustafoBot(Bot):
       self.adapter.send_message(to_send)
 
    def on_join(self):
-      State.users = self.get_users()
-
       self.idle[GustafoBot.CHAT] = Timer(GustafoBot.TIMEOUT, self.on_chat_inactive)
       self.idle[GustafoBot.CHAT].start()
 
    def on_chat_inactive(self):
+      State.users = self.get_users()
+
       users = self.adapter.get_users()
       users.remove(self.adapter.nickname)
 
@@ -69,6 +69,8 @@ class GustafoBot(Bot):
       self.idle[user].start()
 
    def on_user_inactive(self, nick):
+      State.users = self.get_users()
+
       if State.userState[nick] is not SolicitResponse:
          self.resumeState[nick] = State.userState[nick]
          res = State.forceState(SolicitResponse, {'_nick': nick})
@@ -92,7 +94,10 @@ class GustafoBot(Bot):
             State.userState[user] = self.resumeState[user]
 
       it = time.time()
+
+      State.users = self.get_users()
       res = State.query(user, msg)
+
       rt = time.time()
 
       if rt - it < 3.0:
