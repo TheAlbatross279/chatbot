@@ -20,16 +20,10 @@ class Bot(object):
       pass
 
    def on_user_join(self, user, timestamp):
-      res = state.State.userJoin(user, timestamp)
-
-      if res is not None:
-         self.send_message(user, res)
+      pass
 
    def on_user_exit(self, user, timestamp):
-      res = state.State.userLeave(user, timestamp)
-
-      if res is not None:
-         self.send_message(user, res)
+      pass
 
    def on_chat(self, f, t, msg):
       pass
