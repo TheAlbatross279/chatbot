@@ -65,12 +65,11 @@ class State:
       ((conf, context), state) = reduce(lambda x, y: x if x[0][0] > y[0][0] else y, confidence)
 
       if conf < 0.1:
-         #if not nick in State.userState or State.userState[nick] != State:
-         #   State.userState[nick] = State
-         #   return State.query(nick, msg)
-         #else:
-         #   return "I have no idea what's going on"
-         return None
+         if not nick in State.userState or State.userState[nick] != State:
+            State.userState[nick] = State
+            return State.query(nick, msg)
+         else:
+            return None
 
       State.userState[nick] = state
 
