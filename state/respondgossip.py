@@ -16,15 +16,16 @@ class RespondGossip(Gossip):
         #TODO NEED LIST OF USERS
         users = []
 
-        for idx, w in enumerate(msg):
-            if w in keywords:
+        for (ndx, m) in enumerate(msg):
+            if m[0] in keywords:
                 count+=1
-            elif w in tell_me_gossip:
+            elif m[0] in tell_me_gossip:
                 isGossip = True
-            elif w in users:
+            elif m[0] in users:
                 isSpecific = True
-                subject = w
+                subject = m[0]
 
+        confidence = 0.0
         #confidence is high that it's gossip
         if isGossip:
             confidence = 1
@@ -32,7 +33,6 @@ class RespondGossip(Gossip):
         elif count/len(keywords) >= .10:
             confidence = count/len(keywords)
             
-        
         return (confidence, {'specific': isSpecific, 
                              'subject': subject})
 
