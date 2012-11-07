@@ -107,10 +107,6 @@ class GustafoBot(Bot):
 
    def on_chat(self, t, f, msg):
       knowers = self.adapter.get_users()
-<<<<<<< HEAD
-=======
-      #knowers.remove("Gustafo-bot")
->>>>>>> 08306e541d046fdf3cf143aad1513211f9836d86
       knowers.remove(self.adapter.nickname)
       context = {'author': f,
                  'recipient': t,
