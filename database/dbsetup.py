@@ -27,6 +27,7 @@ class Database(object):
 
     def update(self, update_statement):
         self.c.execute(update_statement)
+        self.connection.commit()
 
     def drop_tables(self):
         self.c.execute("DROP TABLE facts")
