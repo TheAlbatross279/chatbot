@@ -46,7 +46,8 @@ class TestBot(SingleServerIRCBot):
         self.connection.privmsg(self.channel, msg)
 
     def on_nicknameinuse(self, c, e):
-        c.nick(c.get_nickname() + "_")
+        self.nickname = c.get_nickname() + "_"
+        c.nick(self.nickname)
 
     def on_welcome(self, c, e):
         c.join(self.channel)
@@ -69,13 +70,12 @@ class TestBot(SingleServerIRCBot):
 
     #Determines if this message is directed at us or not
     def on_pubmsg(self, c, e):
-        if ':' in e.arguments()[0]:
-           a = e.arguments()[0].split(":", 1)
-           if len(a) > 1 and irc_lower(a[0]) == irc_lower(self.connection.get_nickname()):
-               self.do_command(e, a[1].strip())
-           else:
-               nick = nm_to_n(e.source())
-               self.linkbot.on_chat(nick, a[0], a[1].strip())
+        a = e.arguments()[0].split(":", 1)
+        if len(a) > 1 and irc_lower(a[0]) == irc_lower(self.connection.get_nickname()):
+            self.do_command(e, a[1].strip())
+        elif len(a) > 1:
+            nick = nm_to_n(e.source())
+            self.linkbot.on_chat(nick, a[0], a[1].strip())
 
     def get_users(self):
         if len(self.channels) > 0:

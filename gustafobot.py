@@ -49,7 +49,6 @@ class GustafoBot(Bot):
 
    def on_chat_inactive(self):
       users = self.adapter.get_users()
-      #users.remove("Gustafo-bot")
       users.remove(self.adapter.nickname)
 
       if "foaad" in users:
@@ -108,7 +107,6 @@ class GustafoBot(Bot):
 
    def on_chat(self, t, f, msg):
       knowers = self.adapter.get_users()
-      #knowers.remove("Gustafo-bot")
       knowers.remove(self.adapter.nickname)
       context = {'author': f,
                  'recipient': t,
