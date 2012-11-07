@@ -5,7 +5,7 @@ class RespondGossip(Gossip):
     @staticmethod
     def recognize(msg):
         tell_me_gossip = ["gossip", "secret"]
-        keywords = ["tell", "me", "do", "you", "know"]
+        keywords = ["tell", "me" , "about",  "know"]
         count = 0
         isGossip = False
 
@@ -36,24 +36,27 @@ class RespondGossip(Gossip):
                 subject = m[0]                
                 contains_about = False
             else:
-                if m[0] in keywords:
+                if m[0].lower() in keywords:
                     count+=1
-                elif m[0] in tell_me_gossip:
+                elif m[0].lower() in tell_me_gossip:
                     isGossip = True
                 elif (State.users != None and  m[0] in State.users) or m[0] in users:
-                    isSpecific = True
-                    subject = m[0]                
-                elif m[0] == "about":
-                    contains_about = True
-            
+                    if m[0] == "about":
+                        contains_about = True
+                    else:
+                        isSpecific = True
+                        subject = m[0]                
+                
             
         confidence = 0.0
         #confidence is high that it's gossip
         if isGossip:
             confidence = 1
+        elif isSpecific:
+            confidence = 1
         #we're a little less confident it's gossip
-        elif count/len(keywords) >= .10:
-            confidence = count/len(keywords)
+        else:
+            confidence = count/len(keywords) + 0.4
             
         return (confidence, {'specific': isSpecific, 
                              'subject': subject, 

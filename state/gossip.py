@@ -84,7 +84,6 @@ class Gossip(State):
                db.close_conn()
                return response
         else:
-            db.close_conn()
             return "Too bad... I had something really juicy!"
 
 State.register(Gossip, True)
