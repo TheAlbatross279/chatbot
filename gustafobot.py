@@ -48,13 +48,15 @@ class GustafoBot(Bot):
 
       self.adapter.send_message(to_send)
 
-   def on_user_join(self, nick, time):
+   def on_user_join(self, nick, timestamp):
       print "##### JOIN #####"
 
       knowers = self.adapter.get_users()
       knowers.remove(self.adapter.nickname)
 
-      msg = "joined at " + str(time)
+      timestamp = time.strftime("%X", time.localtime())
+
+      msg = "joined at " + timestamp
 
       context = {'author': nick,
                  'recipient': "",
