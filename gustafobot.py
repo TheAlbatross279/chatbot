@@ -48,11 +48,35 @@ class GustafoBot(Bot):
 
       self.adapter.send_message(to_send)
 
-   def on_user_join(self):
-      pass
+   def on_user_join(self, nick, time):
+      print "##### JOIN #####"
 
-   def on_user_exit(self):
-      pass
+      knowers = self.adapter.get_users()
+      knowers.remove(self.adapter.nickname)
+
+      msg = "joined at " + str(time)
+
+      context = {'author': nick,
+                 'recipient': "",
+                 'msg': msg,
+                 'knowers': knowers}
+
+      State.forceState(FindGossip, context)
+
+   def on_user_exit(self, nick, time):
+      print "##### EXIT #####"
+
+      knowers = self.adapter.get_users()
+      knowers.remove(self.adapter.nickname)
+
+      msg = "left at " + str(time)
+
+      context = {'author': nick,
+                 'recipient': "",
+                 'msg': msg,
+                 'knowers': knowers}
+
+      State.forceState(FindGossip, context)
 
    def on_join(self):
       self.idle[GustafoBot.CHAT] = Timer(GustafoBot.TIMEOUT, self.on_chat_inactive)
